@@ -8,8 +8,14 @@ User = get_user_model()
 
 
 class BaseTest(TestCase):
+    """Базовый класс для тестов заметок."""
+
     @classmethod
     def setUpTestData(cls):
+        """
+        Создает тестовых пользователей,
+        заметку и URL-адреса.
+        """
         cls.author = User.objects.create(username='Автор')
         cls.reader = User.objects.create(username='Читатель')
         cls.note = Note.objects.create(
@@ -23,6 +29,7 @@ class BaseTest(TestCase):
         cls.edit_url = reverse('notes:edit', args=(cls.note.slug,))
 
     def setUp(self):
+        """Инициализирует авторизованных клиентов."""
         super().setUp()
         self.author_client = Client()
         self.author_client.force_login(self.author)

@@ -28,8 +28,13 @@ def test_home_availability_for_anonymous_user(client, home_url):
         (pytest.lazy_fixture('signup_url'), HTTPStatus.OK),
     ],
 )
-def test_pages_availability_for_anonymous_user(client, url, expected_status):
-    """Проверяет доступность страниц для анонимного пользователя."""
+def test_pages_availability_for_anonymous_user(
+        client, url, expected_status
+):
+    """
+    Проверяет доступность страниц
+    для анонимного пользователя.
+    """
     assert client.get(url).status_code == expected_status
 
 
@@ -48,7 +53,10 @@ def test_pages_availability_for_anonymous_user(client, url, expected_status):
     ],
 )
 def test_pages_availability_for_different_users(
-    client_fixture, url_fixture, expected_status, request
+        client_fixture,
+        url_fixture,
+        expected_status,
+        request
 ):
     """
     Проверяет доступность страниц редактирования и

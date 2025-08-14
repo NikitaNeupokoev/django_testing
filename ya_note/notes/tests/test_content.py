@@ -3,6 +3,7 @@ from notes.tests.conftest import BaseTest
 
 
 class TestContent(BaseTest):
+    """Тесты проверки содержимого страниц приложения заметок."""
 
     def test_notes_list_for_auth_user(self):
         """
@@ -35,4 +36,7 @@ class TestContent(BaseTest):
                 response = self.author_client.get(url)
                 self.assertEqual(response.status_code, 200)
                 self.assertIn('form', response.context)
-                self.assertIsInstance(response.context['form'], NoteForm)
+                self.assertIsInstance(
+                    response.context['form'],
+                    NoteForm
+                )

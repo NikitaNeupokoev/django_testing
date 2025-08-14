@@ -21,9 +21,14 @@ class BaseTest(TestCase):
 
 
 class TestNoteCreation(BaseTest):
+    """Тесты для проверки создания заметок."""
 
     @classmethod
     def setUpTestData(cls):
+        """
+        Подготовка тестовых данных:
+        пользователь, URL, существующая заметка.
+        """
         cls.user = User.objects.create(username='testuser')
         cls.URL_TO_DONE = reverse('notes:success')
         cls.URL_TO_ADD = reverse('notes:add')
@@ -36,6 +41,10 @@ class TestNoteCreation(BaseTest):
         )
 
     def setUp(self):
+        """
+        Подготовка перед каждым тестом:
+        очистка БД, клиент, тестовые данные формы.
+        """
         Note.objects.all().exclude(pk=self.existing_note.pk).delete()
         self.initial_notes_count = Note.objects.count()
         self.auth_client = Client()
@@ -138,22 +147,35 @@ class TestNoteCreation(BaseTest):
             self.URL_TO_ADD,
             data=form_data
         )
-        self.assertIn(WARNING, response.context['form'].errors['slug'][0])
+        self.assertIn(
+            WARNING,
+            response.context['form'].errors['slug'][0]
+        )
         self.assertEqual(Note.objects.count(), 1)
 
 
 class TestNoteEditDelete(BaseTest):
+    """Тесты редактирования и удаления заметок."""
+
     NEW_NOTE_TEXT = 'Обновлённая заметка'
     NEW_NOTE_TITLE = 'Обновлённый заголовок заметки'
     NEW_NOTE_SLUG = 'new_slug'
 
     @classmethod
     def setUpTestData(cls):
+        """
+        Подготовка тестовых данных:
+        автор заметки и URL-адреса.
+        """
         cls.author = User.objects.create(username='Автор заметки')
         cls.NOTE_LIST_URL = reverse('notes:list')
         cls.edit_success_url = reverse('notes:success')
 
     def setUp(self):
+        """
+        Подготовка перед каждым тестом:
+        авторизация, создание заметки и тестовых данных.
+        """
         self.auth_client = Client()
         self.auth_client.force_login(self.author)
 

@@ -1,4 +1,5 @@
 from http import HTTPStatus
+
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
@@ -9,9 +10,11 @@ User = get_user_model()
 
 
 class TestRoutes(TestCase):
+    """Тесты для проверки маршрутов приложения заметок."""
 
     @classmethod
     def setUpTestData(cls):
+        """Создает тестовые данные и URL-адреса для тестов."""
         cls.author = User.objects.create(username='Автор')
         cls.reader = User.objects.create(username='Читатель')
 
@@ -30,9 +33,18 @@ class TestRoutes(TestCase):
         cls.LOGIN_URL = reverse('users:login')
         cls.LOGOUT_URL = reverse('users:logout')
         cls.SIGNUP_URL = reverse('users:signup')
-        cls.NOTE_DETAIL_URL = reverse('notes:detail', args=(cls.note.slug,))
-        cls.NOTE_EDIT_URL = reverse('notes:edit', args=(cls.note.slug,))
-        cls.NOTE_DELETE_URL = reverse('notes:delete', args=(cls.note.slug,))
+        cls.NOTE_DETAIL_URL = reverse(
+            'notes:detail',
+            args=(cls.note.slug,)
+        )
+        cls.NOTE_EDIT_URL = reverse(
+            'notes:edit',
+            args=(cls.note.slug,)
+        )
+        cls.NOTE_DELETE_URL = reverse(
+            'notes:delete',
+            args=(cls.note.slug,)
+        )
         cls.NOTE_ADD_URL = reverse('notes:add')
         cls.NOTE_LIST_URL = reverse('notes:list')
         cls.NOTE_SUCCESS_URL = reverse('notes:success')
@@ -70,7 +82,10 @@ class TestRoutes(TestCase):
                 )
 
     def test_note_accessibility(self):
-        """Проверяем доступность страниц заметки для разных пользователей."""
+        """
+        Проверяем доступность страниц заметки
+        для разных пользователей.
+        """
         url_status_map = {
             self.NOTE_DETAIL_URL: {
                 self.author_client: HTTPStatus.OK,
@@ -97,7 +112,10 @@ class TestRoutes(TestCase):
         for url in self.AUTHOR_URLS:
             with self.subTest(url=url):
                 response = self.author_client.get(url)
-                self.assertEqual(response.status_code, HTTPStatus.OK)
+                self.assertEqual(
+                    response.status_code,
+                    HTTPStatus.OK
+                )
 
     def test_redirect_for_anonymous_client(self):
         """Проверяем редирект для анонимного пользователя."""

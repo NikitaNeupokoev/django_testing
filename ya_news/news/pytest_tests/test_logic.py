@@ -2,7 +2,10 @@ from http import HTTPStatus
 
 import pytest
 from django.urls import reverse
-from pytest_django.asserts import assertFormError, assertRedirects
+from pytest_django.asserts import (
+    assertFormError,
+    assertRedirects
+)
 
 from news.forms import BAD_WORDS, WARNING
 from news.models import Comment
@@ -13,8 +16,8 @@ pytestmark = pytest.mark.django_db
 
 
 def test_anonymous_user_cant_create_comment(
-    client,
-    detail_url
+        client,
+        detail_url
 ):
     """
     Проверяет, что анонимный пользователь
@@ -59,9 +62,7 @@ def test_user_can_create_comment(
     assert comment.created is not None
 
 
-@pytest.mark.parametrize(
-    'bad_word', BAD_WORDS
-)
+@pytest.mark.parametrize('bad_word', BAD_WORDS)
 def test_user_cant_use_bad_words(
     admin_client,
     news,

@@ -35,7 +35,7 @@ def test_comments_order(client, news, detail_url):
     Проверяет, что комментарии к новости отображаются
     в порядке возрастания даты создания.
     """
-    assert "news" in client.get(detail_url).context
+    assert 'news' in client.get(detail_url).context
 
     news_from_context = client.get(detail_url).context['news']
     comment_list = list(news_from_context.comment_set.all())
